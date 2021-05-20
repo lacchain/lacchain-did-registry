@@ -1,0 +1,29 @@
+{
+	"name": "@lacchain/did-registry",
+	"version": "1.0.0",
+	"description": "The LACChain DID Registry",
+	"author": "Sergio Ceron Figueroa <sergioce@iadb.org>",
+	"keywords": [
+		"did",
+		"lac",
+		"did-method",
+		"ssi",
+		"w3c",
+		"erc-1060",
+		"smart-contracts",
+		"lacchain"
+	],
+	"homepage": "http://dev.lacchain.net/en/did-method",
+	"scripts": {
+		"test": "truffle test"
+	},
+	"dependencies": {
+		"ethereumjs-util": "^5.1.5",
+		"pify": "^5.0.0"
+	},
+	"devDependencies": {
+		"ganache-cli": "^6.5.0",
+		"truffle": "^5.1.67"
+	},
+	"license": "Apache-2.0"
+}
