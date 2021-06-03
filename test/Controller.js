@@ -123,21 +123,15 @@ contract( "DIDRegistry", accounts => {
 
 		await instance.enableKeyRotation( accounts[0], 5, { from: accounts[1] } );
 
-		const keys = {};
+		const firstController = await instance.identityController.call( accounts[0] );
 		for( const i of new Array( 10 ) ){
-			const controller = await instance.identityController.call( accounts[0] );
-			keys[controller] = (keys[controller] || 0 ) + 1;
+			const currentController = await instance.identityController.call( accounts[0] );
+			if( firstController !== currentController ){
+				return assert.equal( true, true, "DIDRegistry didn't change controller" );
+			}
 			await sleep(1);
 		}
-
-		const controllersCount = Object.keys( keys ).length;
-
-		assert.isAtLeast( controllersCount, 2,
-			"DIDRegistry didn't change controller"
-		);
-		return assert.isAtMost( controllersCount, 3,
-			"DIDRegistry didn't change controller"
-		);
+		return assert.equal( true, false, "DIDRegistry didn't change controller" );
 	} );
 
 	it( "should not do automatic key rotation", async() => {

@@ -23,7 +23,8 @@
 	},
 	"devDependencies": {
 		"ganache-cli": "^6.5.0",
-		"truffle": "^5.1.67"
+		"truffle": "^5.1.67",
+		"@truffle/hdwallet-provider": "^1.4.0"
 	},
 	"license": "Apache-2.0"
 }
