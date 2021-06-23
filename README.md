@@ -52,17 +52,23 @@ As ongoing technological and security improvements occur, an owner can replace t
 
 In this new version of smart contract it is possible to have multiple `controllers`  associated to the DID, which allows capabilities of automatic key rotation and on-chain key recovery.
 
-bBfore changing to a new controller it is necessary to register it:
+Before changing to a new controller it is necessary to register it:
 
-`addController(address identity, address controller)`
+```solidity
+addController(address identity, address controller)
+```
 
 After doing that, it is possible now to change controller by calling the following function:
 
-`changeController(address identity, address controller)`
+```solidity
+changeController(address identity, address controller)
+```
 
 Also, if you want to delete one controller, just call the next function: 
 
-`deleteController(address identity, address controller)`
+```solidity
+deleteController(address identity, address controller)
+```
 
 In this last case, there are some rules to comply before deleting one controller:
  1. You cannot delete the current controller, for that case it is necessary to change to other controller
@@ -70,15 +76,29 @@ In this last case, there are some rules to comply before deleting one controller
 
 ### Get current DID Controller 
 
-Ownership of identity is verified by calling the `identityController(address identity) public view returns(address)` function. This returns the address of the current DID controller.
+Ownership of identity is verified by calling the function:
+
+```solidity
+identityController(address identity) public view returns(address);
+``` 
+
+This returns the address of the current DID controller.
 
 ### Setting Attributes
 
-These attributes are set using the `setAttribute(address identity, bytes32 name, bytes value, uint validity)` function and published using events.
+These attributes are set using the function:
+
+```solidity
+setAttribute(address identity, bytes32 name, bytes value, uint validity);
+```
 
 There is also a version of this function that is called with an externally created signature, that is passed to a transaction funding service.
 
-The externally signed version has the following signature `setAttributeSigned(address identity, uint8 sigV, bytes32 sigR, bytes32 sigS, bytes32 name, bytes value, uint validity)`.
+The externally signed version has the following signature:
+
+```solidity
+setAttributeSigned(address identity, uint8 sigV, bytes32 sigR, bytes32 sigS, bytes32 name, bytes value, uint validity);
+```
 
 The signature should be signed off the keccak256 hash of the following tightly packed parameters:
 
@@ -133,11 +153,18 @@ And, the `serviceEndpoint` must be in the `value` field of `setAttribute` functi
 
 ### Revoking Attributes
 
-These attributes are revoked using the `revokeAttribute(address identity, bytes32 name, bytes value)` function and published using events.
+These attributes are revoked using the function:
+
+```solidity
+revokeAttribute(address identity, bytes32 name, bytes value);
+```
 
 There is also a version of this function that is called with an externally created signature, that is passed to a transaction funding service.
 
-The externally signed version has the following signature `revokeAttributeSigned(address identity, uint8 sigV, bytes32 sigR, bytes32 sigS, bytes32 name, bytes value)`.
+The externally signed version has the following signature:
+```solidity
+revokeAttributeSigned(address identity, uint8 sigV, bytes32 sigR, bytes32 sigS, bytes32 name, bytes value);
+```
 
 The signature should be signed off the keccak256 hash of the following tightly packed parameters:
 
@@ -147,13 +174,17 @@ The signature should be signed off the keccak256 hash of the following tightly p
 
 By default, is disabled for any DID the automatic key rotation. To enable this functionality for a specific account you need to execute the following smart contract method:
 
-`enableKeyRotation(address identity, uint keyRotationTime)`
+```solidity
+enableKeyRotation(address identity, uint keyRotationTime);
+```
 
 The keyRotationTime must be greater or equal than the `minKeyRotationTime` defined in the constructor of the smart contract.
 
 To disable the automatic key rotation, just execute the next function:
 
-`disableKeyRotation(address identity)`
+```solidity
+disableKeyRotation(address identity);
+```
 
 ### Key Recovery
 
@@ -164,9 +195,17 @@ The basic operation of key recovery function consist in to prove the ownership o
 
 To prove the ownership of each n/2+1 controller different from the current controller of the DID, you must execute the following steps:
 
-1. Externally sign the following function `recover(address identity, address controller)`. The signature should be generated using the keccak256 hash of the following tightly packed parameters: `byte(0x19), byte(0), address of did registry, 0, identity, "recover", controller`
+1. Off-chain sign the following function
+   ```solidity
+   recover(address identity, address controller);
+   ``` 
+   The signature should be generated using the keccak256 hash of the following tightly packed parameters: `byte(0x19), byte(0), address of did registry, 0, identity, "recover", controller`
 2. Extract the `R`, `S`, `V` parameters of the previous signature
-3. Send a transaction invoking the smart contract function `recover(address identity, v, r, s, address controller)`. Where, `identity` is always the original DID address and `controller` is the current controller that is trying to prove the ownership.
+3. Send a transaction invoking the smart contract function
+   ```solidity
+   recover(address identity, v, r, s, address controller);
+   ``` 
+   Where, `identity` is always the original DID address and `controller` is the current controller that is trying to prove the ownership.
 
 When it is successfully proven the ownership of `n/2+1` controllers, the current controller of the DID will be changed to the **last controller proved**.
 
