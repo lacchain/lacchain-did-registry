@@ -45,7 +45,7 @@ Example `lac` DIDs:
 ### Example
 ```json
 	{
-	"@context": "https://w3id.org/did/v1",
+	"@context": "https://www.w3.org/ns/did/v1",
 	"id": "did:lac:main:0xadf1702b76419f428014d1386af487b2d8145f83",
 	"controller": ["did:lac:main:0xadf1702b76419f428014d1386af487b2d8145f83"],
 	"verificationMethod": [
@@ -215,10 +215,15 @@ To revoke a DID, the controller of the DID needs to be set to `0x0`. Although, `
 changeController(address identity, '0x0');
 ```
 
-
 If there is any other changes to the DID document after such a change,  all preexisting keys and services will be considered revoked.
 
+## Security and Privacy Considerations
+
+There are some features that this DID method implements related to security and privacy.
+
 ### Automatic Key Rotation
+
+Automatic key rotation allows automatically and individually per DID account to rotate the main DID controller. The purpose of this mechanism is to increase the security of the full control of the DID document.
 
 By default, is disabled for any DID the automatic key rotation. To enable this functionality for a specific account you need to execute the following smart contract method:
 
@@ -237,6 +242,7 @@ disableKeyRotation(address identity);
 ### Key Recovery
 
 The on-chain key recovery is one of the main features of this DID method, however it is optional and therefore we separate this functionality in a different smart contract.
+The main idea of this mechanism is to be able to regain full control of the DID by testing control of other controllers registered in the DID. 
 The `DIDRegistryRecoverable` is a subclass of `DIDRegistry`, and it inherits all the functionality of the base DID Registry such as the Automatic Key Rotation.
 
 The basic operation of key recovery function consist in to prove the ownership of `n/2+1` controllers by executing the `recover` smart contract function signed by each of that controllers.
