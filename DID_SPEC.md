@@ -44,7 +44,7 @@ Example `lac` DIDs:
 
 ### Example
 ```json
-	{
+{
 	"@context": "https://www.w3.org/ns/did/v1",
 	"id": "did:lac:main:0xadf1702b76419f428014d1386af487b2d8145f83",
 	"controller": ["did:lac:main:0xadf1702b76419f428014d1386af487b2d8145f83"],
