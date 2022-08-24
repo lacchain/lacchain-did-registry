@@ -9,3 +9,4 @@ build
 .nyc_output
 truffle-config.js
 networks.js
+.openzeppelin/.session
